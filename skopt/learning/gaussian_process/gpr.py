@@ -1,4 +1,5 @@
 import numpy as np
+import cupy as cp
 import warnings
 
 from scipy.linalg import cho_solve
@@ -329,7 +330,12 @@ class GaussianProcessRegressor(sk_GaussianProcessRegressor):
 
                 # Compute variance of predictive distribution
                 y_var = self.kernel_.diag(X)
-                y_var -= np.einsum("ki,kj,ij->k", K_trans, K_trans, K_inv)
+                #y_var -= np.einsum("ki,kj,ij->k", K_trans, K_trans, K_inv)
+                y_var_gpu = cp.asarray(y_var)
+                K_trans_gpu = cp.asarray(K_trans)
+                K_inv_gpu = cp.asarray(K_inv)
+                y_var_gpu -= cp.einsum("ki,kj,ij->k", K_trans_gpu, K_trans_gpu, K_inv_gpu)
+                y_var = cp.asnumpy(y_var_gpu)
 
                 # Check if any of the variances is negative because of
                 # numerical issues. If yes: set the variance to 0.
