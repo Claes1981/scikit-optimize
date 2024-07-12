@@ -329,7 +329,7 @@ class GaussianProcessRegressor(sk_GaussianProcessRegressor):
                 K_inv = self.K_inv_
 
                 # Compute variance of predictive distribution
-                y_var = self.kernel_.diag(X)
+                y_var = self.kernel_.diag(X).copy()
                 #y_var -= np.einsum("ki,kj,ij->k", K_trans, K_trans, K_inv)
                 y_var_gpu = cp.asarray(y_var)
                 K_trans_gpu = cp.asarray(K_trans)
