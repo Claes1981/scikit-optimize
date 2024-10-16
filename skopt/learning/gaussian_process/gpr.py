@@ -14,6 +14,8 @@ from .kernels import Sum
 from .kernels import RBF
 from .kernels import WhiteKernel
 
+from line_profiler import profile
+
 
 def _param_for_white_kernel_in_Sum(kernel, kernel_str=""):
     """
@@ -237,6 +239,7 @@ class GaussianProcessRegressor(sk_GaussianProcessRegressor):
 
         return self
 
+    @profile
     def predict(self, X, return_std=False, return_cov=False,
                 return_mean_grad=False, return_std_grad=False):
         """
