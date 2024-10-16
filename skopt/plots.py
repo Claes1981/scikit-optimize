@@ -363,6 +363,7 @@ def _format_scatter_plot_axes(ax, space, ylabel, plot_dims,
     # Work out min, max of y axis for the diagonal so we can adjust
     # them all to the same value
     diagonal_ylim = _get_ylim_diagonal(ax)
+    # print(f"diagonal_ylim={diagonal_ylim}")
 
     # Number of search-space dimensions we are using.
     if isinstance(ax, (list, np.ndarray)):
